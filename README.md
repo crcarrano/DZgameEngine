@@ -24,4 +24,5 @@ as much a possible the use of C++ libraries. Instead, the engine provides
 its own classes for data manipulation and other necessities, that are
 designed for speed and not for generalized usage.
 
+For further information, please visit http://www.dazzlingsolutions.com.
 
