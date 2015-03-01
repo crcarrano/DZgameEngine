@@ -1,0 +1,181 @@
+/***************************************************************************
+ *   Copyright (C) 2014 by Carlo Carrano                                   *
+ *   ccarrano@dazzlingsolutions.com                                        *
+ *                                                                         *
+ *   This file is part of DZengine, the "Program",                         *
+ *   which is free software; you can redistribute it and/or modify         *
+ *   it under the terms of the GNU General Public License version 2, as    *
+ *   published by the Free Software Foundation.                            *
+ *                                                                         *
+ *   The Program is distributed in the hope that it will be useful,        *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You can retrieve a copy of the GNU General Public License             *
+ *   at the following URL:                                                 *
+ *   http://www.gnu.org/licenses/gpl-2.0.html                              *
+ ***************************************************************************/
+
+/***************************************************************************
+ * Change Log                                                              *
+ *-------------------------------------------------------------------------*
+ * 08-07-2014	file created                                               *
+ * 08-22-2014	changed the object to a static one			   *
+ * 10-14-2014	added SDL error logging capability                         *
+ * 10-20-2014	added support for SDL_ttf library logging                  *
+ ***************************************************************************/
+
+
+#include "DZlogger.h"
+#include "SDL.h"
+#include "SDL_image.h"
+#include "SDL_ttf.h"
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+
+// allocation of static variables
+ofstream	DZlogger::logfile;
+DZlogger	DZlogger_instance;
+DZlogger*	DZlogger::InstancePtr = &DZlogger_instance;
+
+
+// Instantiator of this singleton class
+DZlogger* DZlogger::Instance()
+{
+	return InstancePtr;
+}
+
+
+// constructor
+DZlogger::DZlogger()
+{
+	// store log file name
+	strcpy(FileName, DZ_LOG_FILE);
+
+	// Initialize SDL error strings
+	SDL_SetError("");
+
+	// open log file
+	logfile.open(FileName, ios::out);
+
+	DZ_LOG(DZ_LOG_TRACE, "DZlogger successfully created");
+}
+
+// destructor
+DZlogger::~DZlogger()
+{
+	DZ_LOG(DZ_LOG_TRACE, "Terminating DZlogger");
+
+	// close log file
+	logfile.close();
+}
+
+
+// logs text only
+void DZlogger::DZlog(int level, const char* text, const char* file, const char* func, int line)
+{
+	if (level >= DZ_LOG_DEFAULT)
+	{
+		time_t rawtime;
+		struct tm *timeinfo;
+		time(&rawtime);
+		timeinfo = localtime(&rawtime);
+
+		logfile << asctime(timeinfo)
+			<< LOG_LEVEL(level)
+			<< file << '\n'
+			<< func
+			<< " - "
+			<< line
+			<< " - "
+			<< text
+			<< logSDLerror(level)
+			<< "\n\n";
+		logfile << flush;
+	}
+}
+
+// logs text + int variable
+void DZlogger::DZlog1(int level, const char* text, int var1, const char* file, const char* func, int line)
+{
+	if (level >= DZ_LOG_DEFAULT)
+	{
+		time_t rawtime;
+		struct tm *timeinfo;
+		time(&rawtime);
+		timeinfo = localtime(&rawtime);
+
+		logfile << asctime(timeinfo)
+			<< LOG_LEVEL(level)
+			<< file << '\n'
+			<< func
+			<< " - "
+			<< line
+			<< " - "
+			<< text
+			<< '\t'
+			<< var1
+			<< logSDLerror(level)
+			<< "\n\n";
+		logfile << flush;
+	}
+}
+
+// logs text + 2 int variables
+void DZlogger::DZlog2(int level, const char* text, int var1, int var2, const char* file, const char* func, int line)
+{
+	if (level >= DZ_LOG_DEFAULT)
+	{
+		time_t rawtime;
+		struct tm *timeinfo;
+		time(&rawtime);
+		timeinfo = localtime(&rawtime);
+
+		logfile << asctime(timeinfo)
+			<< LOG_LEVEL(level)
+			<< file << '\n'
+			<< func
+			<< " - "
+			<< line
+			<< " - "
+			<< text
+			<< '\t'
+			<< var1
+			<< '\t'
+			<< var2
+			<< logSDLerror(level)
+			<< "\n\n";
+		logfile << flush;
+	}
+}
+
+
+// logs text if the test is true
+void DZlogger::DZassert(bool test, const char* text, const char* file, const char* func, int line)
+{
+	if (test)
+	{
+		DZlog(DZ_LOG_ASSERT, text, file, func, line);
+	}
+}
+
+
+const char* DZlogger::logSDLerror(int level)
+{
+	string error_string("");
+
+	if (level == DZ_LOG_WARN)
+	{
+		error_string = "\n";
+		error_string += "SDL error: ";
+		error_string += SDL_GetError();
+
+		SDL_SetError("");
+	}
+
+	return error_string.c_str();
+}
