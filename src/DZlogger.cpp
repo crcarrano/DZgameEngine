@@ -1,30 +1,26 @@
-/***************************************************************************
- *   Copyright (C) 2014 by Carlo Carrano                                   *
- *   ccarrano@dazzlingsolutions.com                                        *
- *                                                                         *
- *   This file is part of DZengine, the "Program",                         *
- *   which is free software; you can redistribute it and/or modify         *
- *   it under the terms of the GNU General Public License version 2, as    *
- *   published by the Free Software Foundation.                            *
- *                                                                         *
- *   The Program is distributed in the hope that it will be useful,        *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You can retrieve a copy of the GNU General Public License             *
- *   at the following URL:                                                 *
- *   http://www.gnu.org/licenses/gpl-2.0.html                              *
- ***************************************************************************/
+/**************************************************************************
+ *   Copyright (C) 2015 by Carlo Carrano                                  *
+ *   crc@dazzlingsolutions.com                                            *
+ *                                                                        *
+ *   This program is free software; you can redistribute it and/or modify *
+ *   it under the terms of the GNU General Public License as published by *
+ *   the Free Software Foundation; version 2 of the License.              *
+ *   This program is distributed in the hope that it will be useful, but  *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of           *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU     *
+ *   General Public License for more details.                             *
+ *   You should have received a copy of the GNU General Public License    *
+ *   along with this program; if not, write to the Free Software          *
+ *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  *
+ *   USA.  																  *
+ **************************************************************************/
 
-/***************************************************************************
- * Change Log                                                              *
- *-------------------------------------------------------------------------*
- * 08-07-2014	file created                                               *
- * 08-22-2014	changed the object to a static one			   *
- * 10-14-2014	added SDL error logging capability                         *
- * 10-20-2014	added support for SDL_ttf library logging                  *
- ***************************************************************************/
+
+/**************************************************************************
+ * Change Log                                                             *
+ *------------------------------------------------------------------------*
+ * 03-01-2015	file created                                              *
+ **************************************************************************/
 
 
 #include "DZlogger.h"
