@@ -18,10 +18,19 @@
 # #######################################################################
 #
 # DZgameEngine/src makefile
+#
+#########################################################################
+# Change Log
+#------------------------------------------------------------------------
+# 03-01-2015	file created
+#########################################################################
+
 
 INC_DIR = $(PWD)/../include
 SDL_INC = /usr/include/SDL2
 OBJ_DIR = $(PWD)/../obj
+
+INCLUDE = $(INC_DIR)/*.h
 
 CC = g++
 CFLAGS = -Wall -ggdb -Og -I$(INC_DIR) -I$(SDL_INC)
@@ -31,18 +40,16 @@ LIBS =
 
 APP_NAME = DZgameEngine
 
-# list here all the header files
-INCLUDE = \
-$(INC_DIR)/DZlogger.h	\
-$(END)
-
-
+################################################
 # list here all the object files
+################################################
 OBJ = \
 $(OBJ_DIR)/DZlogger.o \
 $(END)
 
+################################################
 # Targets
+################################################
 
 $(APP_NAME): $(OBJ)
 	-@echo "src make completed"

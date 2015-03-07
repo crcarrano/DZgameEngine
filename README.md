@@ -29,13 +29,19 @@ For further information, please visit http://www.dazzlingsolutions.com.
 =========================================================================
 # Coding style requirements to write code for DZgameEngine
 
-- Use TAB to indent lines
-- Set TAB to 4 spaces
+- Use TAB to indent lines.
+- Set TAB to 4 spaces.
 - Be consistent with the {} style used in the file being edited. Please
   do not mix up different styles.
+- Class attributes are represented in 'camel' notation.
+  Examples: bitmapArray, statusPtri, DZstateMachine.
+- Local variables are represented in lower case letters; if the variable
+  name contains multiple elements, they are separated with underscores. 
+  Examples: local_variable, bitmap_ptr.
+- Pointers shall all have a suffix _ptr or Ptr.
 
 =========================================================================
-# SDL 2.x License
+# SDL-2.x and TinyXML-2 License
 
 /* zlib.h -- interface of the 'zlib' general purpose compression library
   version 1.2.2, October 3rd, 2004

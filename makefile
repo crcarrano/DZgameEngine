@@ -20,7 +20,7 @@
 # DZgameEngine master makefile
 
 SRC_DIR = $(PWD)/src
-SRC_MOD_DIR = $(PWD)/src_mod
+SRC_MOD_DIR = $(PWD)/src_mod_xml
 SRC_APP_DIR = $(PWD)/src_app
 
 APP_NAME = DZgameEngine
@@ -40,12 +40,12 @@ LIBS = `sdl2-config --cflags --libs`
 
 $(APP_NAME):
 	-@(cd $(SRC_DIR) ; make)
-#	-@(cd $(SRC_MOD_DIR) ; make)
+	-@(cd $(SRC_MOD_DIR) ; make -f makefile)
 #	-@(cd $(SRC_APP_DIR) ; make);
-	$(CC) -o $(BIN_DIR)/$(APP_NAME) $(OBJ) $(CFLAGS) $(LIBS)
+#	$(CC) -o $(BIN_DIR)/$(APP_NAME) $(OBJ) $(CFLAGS) $(LIBS)
 
 clean:
 	-@(cd $(SRC_DIR) ; make clean)
-#	-@(cd $(SRC_MOD_DIR) ; make clean)
+	-@(cd $(SRC_MOD_DIR) ; make -f makefle clean)
 #	-@(cd $(SRC_APP_DIR) ; make clean)
 
