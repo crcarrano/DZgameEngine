@@ -34,7 +34,7 @@ INCLUDE = $(INC_DIR)/*.h
 
 CC = g++
 CFLAGS = -Wall -ggdb -Og -I$(INC_DIR) -I$(SDL_INC)
-#CFLAGS = -Wall -O1 -s -I$(INC_DIR)
+#CFLAGS = -Wall -O1 -s -I$(INC_DIR) -I$(SDL_INC)
 
 LIBS =
 
@@ -44,9 +44,7 @@ APP_NAME = DZgameEngine
 # list here all the object files
 ################################################
 OBJ = \
-$(OBJ_DIR)/DZlogger.o \
-$(OBJ_DIR)/DZengine.o \
-$(OBJ_DIR)/DZinputHandler.o \
+$(OBJ_DIR)/main.o \
 $(END)
 
 ################################################

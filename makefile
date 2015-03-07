@@ -41,11 +41,11 @@ LIBS = `sdl2-config --cflags --libs`
 $(APP_NAME):
 	-@(cd $(SRC_DIR) ; make)
 	-@(cd $(SRC_MOD_DIR) ; make -f makefile)
-#	-@(cd $(SRC_APP_DIR) ; make);
-#	$(CC) -o $(BIN_DIR)/$(APP_NAME) $(OBJ) $(CFLAGS) $(LIBS)
+	-@(cd $(SRC_APP_DIR) ; make);
+	$(CC) -o $(BIN_DIR)/$(APP_NAME) $(OBJ) $(CFLAGS) $(LIBS)
 
 clean:
 	-@(cd $(SRC_DIR) ; make clean)
-	-@(cd $(SRC_MOD_DIR) ; make -f makefle clean)
-#	-@(cd $(SRC_APP_DIR) ; make clean)
+	-@(cd $(SRC_MOD_DIR) ; make -f makefile clean)
+	-@(cd $(SRC_APP_DIR) ; make clean)
 
