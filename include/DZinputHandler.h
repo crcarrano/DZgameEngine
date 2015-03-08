@@ -32,12 +32,6 @@
 #include "DZmouse.h"
 #include "DZjoystick.h"
 
-typedef enum mouse_axis 			// CRC remove begin
-{
-	 MOUSE_X = 0
-	,MOUSE_Y
-} MOUSE_AXIS;									// CRC remove end
-
 
 class DZengine;
 
@@ -53,7 +47,7 @@ class DZinputHandler
 		unsigned int	getJoy_y(unsigned int joy, unsigned int stick);
 		bool			joyButton(unsigned int joy, unsigned int button);
 
-		bool			mouseButton(unsigned int button);
+		bool			mouseButton(MOUSE_BUTTONS button);
 		unsigned int	mousePosition(MOUSE_AXIS axis);
 
 		SDL_Keycode		getKey();

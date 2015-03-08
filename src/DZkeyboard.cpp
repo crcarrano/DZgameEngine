@@ -22,24 +22,32 @@
  **************************************************************************/
 
 
+#include "DZkeyboard.h"
 
-#ifndef DZKEYBOARD_H
-#define DZKEYBOARD_H
-
-#include "SDL.h"
-
-
-class DZkeyboard
+DZkeyboard::DZkeyboard()
 {
-	public:
-		DZkeyboard();
+	keyCode = SDLK_UNKNOWN;
+}
 
-		void eventHandler(SDL_Event& event);
-		SDL_Keycode getKeycode();
+void DZkeyboard::eventHandler(SDL_Event& event)
+{
+	switch(event.type)
+	{
+		case SDL_KEYDOWN:
+			keyCode = event.key.keysym.sym;
+			break;
 
-	protected:
-	private:
-		SDL_Keycode keyCode;	// last key being pressed
-};
+		case SDL_KEYUP:
+			keyCode = SDLK_UNKNOWN;
+			break;
 
-#endif // DZKEYBOARD_H
+		default:
+			break;
+	}
+}
+
+
+SDL_Keycode DZkeyboard::getKeycode()
+{
+	return keyCode;
+}

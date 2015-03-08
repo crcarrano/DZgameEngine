@@ -119,21 +119,19 @@ bool DZinputHandler::joyButton(unsigned int joy, unsigned int button)
 	return false;
 }
 
-bool DZinputHandler::mouseButton(unsigned int button)
+bool DZinputHandler::mouseButton(MOUSE_BUTTONS button)
 {
-//	return mouse.getButtonStatus(button);	CRC
-	return false;								// CRC remove
+	return mouse.getButtonStatus(button);
 }
 
 unsigned int DZinputHandler::mousePosition(MOUSE_AXIS axis)
 {
-//	return mouse.getValue(axis);		CRC
-	return 0;							// CRC remove
+	return mouse.getValue(axis);
 }
 
 SDL_Keycode DZinputHandler::getKey()
 {
-//	return keyboard.getKeycode();	CRC
+	return keyboard.getKeycode();
 	return 0;
 }
 
@@ -151,7 +149,7 @@ void DZinputHandler::eventHandler(DZengine* engine)
 
 			case SDL_KEYDOWN:
 			case SDL_KEYUP:
-//				keyboard.eventHandler(event);			CRC
+				keyboard.eventHandler(event);
 				break;
 
 			case SDL_JOYAXISMOTION:
@@ -170,7 +168,7 @@ void DZinputHandler::eventHandler(DZengine* engine)
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_MOUSEBUTTONUP:
 			case SDL_MOUSEMOTION:
-//				mouse.eventHandler(event);				CRC
+				mouse.eventHandler(event);
 				break;
 
 			default:
