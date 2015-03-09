@@ -39,7 +39,7 @@ DZinputHandler::~DZinputHandler()
 		{
 			for(unsigned int i = 0; i < NumJoysticks; i++)
 			{
-//				delete (*joystickPtr)[i];						CRC
+				delete (*joystickPtr)[i];
 			}
 		}
 		delete joystickPtr;
@@ -58,7 +58,7 @@ void DZinputHandler::joystick_init()
 	{
 		for(int i = 0; i < SDL_NumJoysticks(); i++)
 		{
-//			(*joystickPtr)[i] = new DZjoystick(i);				CRC
+			(*joystickPtr)[i] = new DZjoystick(i);
 			NumJoysticks++;
 		}
 		SDL_JoystickEventState(SDL_ENABLE);
@@ -82,11 +82,11 @@ unsigned int DZinputHandler::getJoy_x(unsigned int joy, unsigned int stick)
 	{
 		if (stick == 0)
 		{
-//			return (*joystickPtr)[joy]->getValue(0);	CRC
+			return (*joystickPtr)[joy]->getValue(0);
 		}
 		else
 		{
-//			return (*joystickPtr)[joy]->getValue(3);	CRC
+			return (*joystickPtr)[joy]->getValue(3);
 		}
 	}
 
@@ -99,11 +99,11 @@ unsigned int DZinputHandler::getJoy_y(unsigned int joy, unsigned int stick)
 	{
 		if (stick == 0)
 		{
-//			return (*joystickPtr)[joy]->getValue(1);	CRC
+			return (*joystickPtr)[joy]->getValue(1);
 		}
 		else
 		{
-//			return (*joystickPtr)[joy]->getValue(2);	CRC
+			return (*joystickPtr)[joy]->getValue(2);
 		}
 	}
 
@@ -114,7 +114,7 @@ bool DZinputHandler::joyButton(unsigned int joy, unsigned int button)
 {
 	if (joy < NumJoysticks && joystickPtr != 0)
 	{
-//		return (*joystickPtr)[joy]->getButtonStatus(button);	CRC
+		return (*joystickPtr)[joy]->getButtonStatus(button);
 	}
 	return false;
 }
@@ -155,14 +155,14 @@ void DZinputHandler::eventHandler(DZengine* engine)
 			case SDL_JOYAXISMOTION:
 			case SDL_JOYBUTTONDOWN:
 			case SDL_JOYBUTTONUP:
-//				if (event.jaxis.which < (int) joystickPtr->getSize())		CRC begin
-//				{
-//					(*joystickPtr)[event.jaxis.which]->eventHandler(event);
-//				}
-//				else
-//				{
-//					DZ_LOG1(DZ_LOG_WARN, "wrong joystick id", (int)event.jaxis.which);
-//				}															CRC end
+				if (event.jaxis.which < (int) joystickPtr->getSize())
+				{
+					(*joystickPtr)[event.jaxis.which]->eventHandler(event);
+				}
+				else
+				{
+					DZ_LOG1(DZ_LOG_WARN, "wrong joystick id", (int)event.jaxis.which);
+				}
 				break;
 
 			case SDL_MOUSEBUTTONDOWN:

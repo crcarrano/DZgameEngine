@@ -52,7 +52,7 @@ $(END)
 ################################################
 
 $(APP_NAME): $(OBJ)
-	-@echo "src make completed"
+	-@echo "src_app make completed"
 
 $(OBJ_DIR)/%.o: %.cpp $(INCLUDE)
 	$(CC) -c -o $@ $< $(CFLAGS)

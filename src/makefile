@@ -49,6 +49,7 @@ $(OBJ_DIR)/DZengine.o \
 $(OBJ_DIR)/DZinputHandler.o \
 $(OBJ_DIR)/DZkeyboard.o \
 $(OBJ_DIR)/DZmouse.o \
+$(OBJ_DIR)/DZjoystick.o \
 $(END)
 
 ################################################
