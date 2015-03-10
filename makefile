@@ -33,7 +33,7 @@ BIN_DIR = $(PWD)/bin
 CC = g++
 CFLAGS = -Wall -ggdb -Og 
 
-LIBS = `sdl2-config --cflags --libs`
+LIBS = `sdl2-config --cflags --libs` /usr/lib64/libSDL2_image.so
 
 # Targets
 .PHONY: clean $(APP_NAME)

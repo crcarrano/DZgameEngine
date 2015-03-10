@@ -31,7 +31,6 @@ DZinputHandler*	DZengine::inputHandlerPtr;
 unsigned int	DZengine::windowWidth;
 unsigned int	DZengine::windowHeight;
 
-#define DELAY_TIME  1000.0f/60			// CRC remove
 
 //--------------------------------------------------------------------------
 

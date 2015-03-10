@@ -1,6 +1,3 @@
-#ifndef DZPROJECT_H_INCLUDED
-#define DZPROJECT_H_INCLUDED
-
 /**************************************************************************
  *   Copyright (C) 2015 by Carlo Carrano                                  *
  *   crc@dazzlingsolutions.com                                            *
@@ -24,45 +21,16 @@
  * 03-09-2015	file created                                              *
  **************************************************************************/
 
-#include "DZarray.h"
-
-// Forward declarations
-class DZobject;
-class DZparams;
+#include "DZobject.h"
+#include "DZlogger.h"
 
 
-/*****************************************************************
- *
- * Component:		DZproject.h
- *
- * Description:		This file lists all the specific definitions
- *					for the application being developed.
- *					Update all the definitions in this file
- *					with the appropriate information for the
- *					application you are developing.
- *
- ****************************************************************/
+DZobject::DZobject(const DZparams* params_ptr)
+{
+	DZ_LOG(DZ_LOG_TRACE, "Creating object");
+}
 
-// The name of the XML configuration file used for this application
-#define DZCONFIGFILE	"config/test.xml"
-
-
-
-// The default state ID, i.e. the state that is first entered when
-// the application starts
-#define DEFAULT_STATE_ID			0
-#define DEFAULT_STATE_CONSTRUCTOR	TestState
-
-
-// Physics constants
-#define FPS			60					// frames per second
-#define DELAY_TIME	(1000.0f / FPS)		// main loop total delay time
-
-
-
-// global function declarations
-extern DZobject* DZcreateObject(unsigned int object_id,
-								DZparams* parms_ptr,
-								DZarray<DZobject*>* obj_list);
-
-#endif // DZPROJECT_H_INCLUDED
+DZobject::~DZobject()
+{
+	DZ_LOG(DZ_LOG_TRACE, "Destroying object");
+}

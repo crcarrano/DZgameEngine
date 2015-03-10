@@ -1,6 +1,3 @@
-#ifndef DZPROJECT_H_INCLUDED
-#define DZPROJECT_H_INCLUDED
-
 /**************************************************************************
  *   Copyright (C) 2015 by Carlo Carrano                                  *
  *   crc@dazzlingsolutions.com                                            *
@@ -24,45 +21,39 @@
  * 03-09-2015	file created                                              *
  **************************************************************************/
 
-#include "DZarray.h"
 
-// Forward declarations
-class DZobject;
-class DZparams;
+#ifndef DZOBJECT_H
+#define DZOBJECT_H
+
+
+#include "DZparams.h"
 
 
 /*****************************************************************
  *
- * Component:		DZproject.h
+ * Class:		DZobject
  *
- * Description:		This file lists all the specific definitions
- *					for the application being developed.
- *					Update all the definitions in this file
- *					with the appropriate information for the
- *					application you are developing.
+ * Description:	Pure virstual class. It is at the base
+ *				for the creation of the general objects
+ *				that are used in the application.
+ *
+ * Interface:	draw()		- draws the object
+ *				update()	- updates the object params
+ *							  based on events and flowing
+ *							  of time
  *
  ****************************************************************/
+class DZobject
+{
+	public:
+		virtual	     ~DZobject();
+		virtual void draw() = 0;
+		virtual void update() = 0;
 
-// The name of the XML configuration file used for this application
-#define DZCONFIGFILE	"config/test.xml"
+	protected:
+		DZobject(const DZparams* params_ptr);
 
+	private:
+};
 
-
-// The default state ID, i.e. the state that is first entered when
-// the application starts
-#define DEFAULT_STATE_ID			0
-#define DEFAULT_STATE_CONSTRUCTOR	TestState
-
-
-// Physics constants
-#define FPS			60					// frames per second
-#define DELAY_TIME	(1000.0f / FPS)		// main loop total delay time
-
-
-
-// global function declarations
-extern DZobject* DZcreateObject(unsigned int object_id,
-								DZparams* parms_ptr,
-								DZarray<DZobject*>* obj_list);
-
-#endif // DZPROJECT_H_INCLUDED
+#endif // DZOBJECT_H
