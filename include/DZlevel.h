@@ -21,35 +21,57 @@
  * 03-10-2015	file created                                              *
  **************************************************************************/
 
+#ifndef DZLEVEL_H
+#define DZLEVEL_H
 
-#ifndef DZSTATEMACHINE_H
-#define DZSTATEMACHINE_H
+#include "DZarray.h"
+#include "DZlayer.h"
+
+typedef struct tileSet
+{
+	unsigned int	firstGridID;	// gid
+	unsigned int	tileWidth;		// tile width in pixels
+	unsigned int	tileHeight;		// tile height in pixels
+	unsigned int	spacing;		// space between tiles in texture image
+	unsigned int	margin;			// margin at the edge of the whole picture
+	unsigned int	width;			// tileset image width in pixels
+	unsigned int	height;			// tileset image height in pixels
+	unsigned int	numColumns;		// width / (tileWidth + spacing)
+	unsigned int	numRows;		// height / (tileHeight + spacing)
+	unsigned int	id;				// ID of the tileset; identifies the texture
+} TILESET;
 
 
-#include "DZstate.h"
-#include "DZxmlParser.h"
+// add further layer ID before LAYER_MAX_ID
+typedef enum
+{
+	 LAYER_BACKGROUND = 0
+	,LAYER_FOREGROUND
+	,LAYER_TOP
+	,LAYER_MAX_ID
+} LAYER_ID;
 
 
-class DZstateMachine
+class DZstate;
+
+
+class DZlevel
 {
 	public:
-		DZstateMachine();
-		~DZstateMachine();
+		DZlevel(DZstate* state_ptr);
+		~DZlevel();
 
-		void	newState(DZstate* state_ptr);
-		void 	pauseState();
-		void	resumeState();
+		void onEnter(const char* filename);
+		void onExit();
 
-		void	update();
-		void	render();
-
-		DZxmlParser* Parser() { return parserPtr; }
+		void update();
+		void render(LAYER_ID layer);
 
 	protected:
 	private:
-		DZstate*     currentState;
-		DZstate*     pausedState;
-		DZxmlParser* parserPtr;
+		DZarray<DZlayer*>*	 layerList;
+		DZarray<TILESET*>*	 tilesetList;
+		DZstate*	  		 statePtr;
 };
 
-#endif // DZSTATEMACHINE_H
+#endif // DZLEVEL_H

@@ -112,14 +112,14 @@ bool DZtextureManager::store(SDL_Texture* texture, unsigned int id)
 
 
 void DZtextureManager::draw(unsigned int id,
-			    unsigned int x,
-			    unsigned int y,
-			    unsigned int cx,
-			    unsigned int cy,
-			    unsigned int angle,
-			    unsigned int width,
-			    unsigned int height,
-			    SDL_RendererFlip flip)
+						    unsigned int x,
+			   				unsigned int y,
+						    unsigned int cx,
+						    unsigned int cy,
+						    unsigned int angle,
+						    unsigned int width,
+						    unsigned int height,
+						    SDL_RendererFlip flip)
 {
 	SDL_Rect srcRect;
 	SDL_Rect destRect;

@@ -70,7 +70,7 @@
 using namespace std;
 
 // Change the name of the log file as you wish
-#define DZ_LOG_FILE	"application.log"
+#define DZ_LOG_FILE	"DZengine.log"
 
 
 // Application Log Level
@@ -107,6 +107,9 @@ typedef enum
 #define DZ_LOG(_level, _text)					\
 { DZlogger::Instance()->DZlog(_level, _text, __FILE__, __FUNCTION__, __LINE__); }
 
+#define DZ_LOG_STR(_level, _text, _str)			\
+{ DZlogger::Instance()->DZlog_str(_level, _text, _str, __FILE__, __FUNCTION__, __LINE__); }
+
 #define DZ_LOG1(_level, _text, _var1)			\
 { DZlogger::Instance()->DZlog1(_level, _text, _var1, __FILE__, __FUNCTION__, __LINE__); }
 
@@ -124,6 +127,7 @@ class DZlogger
 		~DZlogger();
 		static DZlogger* Instance();
 		void DZlog(int level, const char* text, const char* file, const char* func, int line);
+		void DZlog_str(int level, const char* text, const char* var1, const char* file, const char* func, int line);
 		void DZlog1(int level, const char* text, int var1, const char* file, const char* func, int line);
 		void DZlog2(int level, const char* text, int var1, int var2, const char* file, const char* func, int line);
 		void DZassert(bool test, const char* text, const char* file, const char* func, int line);

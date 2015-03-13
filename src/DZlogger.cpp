@@ -95,6 +95,32 @@ void DZlogger::DZlog(int level, const char* text, const char* file, const char* 
 	}
 }
 
+// logs text + string variable
+void DZlogger::DZlog_str(int level, const char* text, const char* var1, const char* file, const char* func, int line)
+{
+	if (level >= DZ_LOG_DEFAULT)
+	{
+		time_t rawtime;
+		struct tm *timeinfo;
+		time(&rawtime);
+		timeinfo = localtime(&rawtime);
+
+		logfile << asctime(timeinfo)
+			<< LOG_LEVEL(level)
+			<< file << '\n'
+			<< func
+			<< " - "
+			<< line
+			<< " - "
+			<< text
+			<< '\t'
+			<< var1
+			<< logSDLerror(level)
+			<< "\n\n";
+		logfile << flush;
+	}
+}
+
 // logs text + int variable
 void DZlogger::DZlog1(int level, const char* text, int var1, const char* file, const char* func, int line)
 {

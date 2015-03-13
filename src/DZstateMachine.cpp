@@ -22,34 +22,98 @@
  **************************************************************************/
 
 
-#ifndef DZSTATEMACHINE_H
-#define DZSTATEMACHINE_H
+#include "DZstateMachine.h"
+#include "DZproject.h"
 
 
-#include "DZstate.h"
-#include "DZxmlParser.h"
 
-
-class DZstateMachine
+DZstateMachine::DZstateMachine()
 {
-	public:
-		DZstateMachine();
-		~DZstateMachine();
+	DZ_LOG(DZ_LOG_TRACE, "Creating FSM");
+	currentState = 0;
+	pausedState = 0;
+	parserPtr = new DZxmlParser(DZCONFIGFILE);
+}
 
-		void	newState(DZstate* state_ptr);
-		void 	pauseState();
-		void	resumeState();
+DZstateMachine::~DZstateMachine()
+{
+	DZ_LOG(DZ_LOG_TRACE, "Destroying FSM");
+	if (currentState != 0)
+	{
+		DZ_LOG(DZ_LOG_TRACE, "deleting currentState");
+		currentState->onExit();
+		delete currentState;
 
-		void	update();
-		void	render();
+	}
+	if (pausedState != 0)
+	{
+		DZ_LOG(DZ_LOG_TRACE, "deleting pausedState");
+		pausedState->onExit();
+		delete pausedState;
+	}
+	if (parserPtr != 0)
+	{
+		DZ_LOG(DZ_LOG_TRACE, "Destroying parser");
+		delete parserPtr;
+	}
+}
 
-		DZxmlParser* Parser() { return parserPtr; }
 
-	protected:
-	private:
-		DZstate*     currentState;
-		DZstate*     pausedState;
-		DZxmlParser* parserPtr;
-};
+void DZstateMachine::newState(DZstate* state_ptr)
+{
+	if (currentState != 0)
+	{
+		if(currentState->getStateID() == state_ptr->getStateID())
+		{
+			delete state_ptr;
+			return;
+		}
 
-#endif // DZSTATEMACHINE_H
+		currentState->onExit();
+		delete currentState;
+	}
+
+	DZ_LOG1(DZ_LOG_TRACE, "Changing state to: ", state_ptr->getStateID());
+	currentState = state_ptr;
+	currentState->onEnter();
+}
+
+void DZstateMachine::update()
+{
+	if(currentState != 0)
+	{
+		currentState->update();
+	}
+}
+
+
+void DZstateMachine::render()
+{
+	if(currentState != 0)
+	{
+		currentState->render();
+	}
+}
+
+void DZstateMachine::pauseState()
+{
+	pausedState = currentState;
+	currentState = 0;
+}
+
+void DZstateMachine::resumeState()
+{
+	if (pausedState == 0)
+	{
+		DZ_LOG(DZ_LOG_WARN, "There is no paused state. Remaining in current state.");
+		return;
+	}
+
+	if (currentState != 0)
+	{
+		delete currentState;
+	}
+	currentState = pausedState;
+	pausedState = 0;
+}
+

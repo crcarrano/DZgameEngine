@@ -22,19 +22,21 @@
 #########################################################################
 # Change Log
 #------------------------------------------------------------------------
+# 03-13-2015	added new object files to the list
 # 03-01-2015	file created
 #########################################################################
 
 
 INC_DIR = $(PWD)/../include
+INC_MOD_DIR = $(PWD)/../src_mod_xml
 SDL_INC = /usr/include/SDL2
 OBJ_DIR = $(PWD)/../obj
 
 INCLUDE = $(INC_DIR)/*.h
 
 CC = g++
-CFLAGS = -Wall -ggdb -Og -I$(INC_DIR) -I$(SDL_INC)
-#CFLAGS = -Wall -O1 -s -I$(INC_DIR)
+CFLAGS = -Wall -ggdb -Og -I$(INC_DIR) -I$(SDL_INC) -I$(INC_MOD_DIR)
+#CFLAGS = -Wall -O1 -s -I$(INC_DIR) -I$(INC_MOD_DIR)
 
 LIBS =
 
@@ -51,6 +53,13 @@ $(OBJ_DIR)/DZkeyboard.o \
 $(OBJ_DIR)/DZmouse.o \
 $(OBJ_DIR)/DZjoystick.o \
 $(OBJ_DIR)/DZtextureManager.o \
+$(OBJ_DIR)/DZlayer.o \
+$(OBJ_DIR)/DZlevel.o \
+$(OBJ_DIR)/DZxmlParser.o \
+$(OBJ_DIR)/DZstate.o \
+$(OBJ_DIR)/DZstateMachine.o \
+$(OBJ_DIR)/DZinitState.o \
+$(OBJ_DIR)/DZcreateObject.o \
 $(END)
 
 ################################################

@@ -21,6 +21,7 @@
 /**************************************************************************
  * Change Log                                                             *
  *------------------------------------------------------------------------*
+ * 03-13-2015	removed references to default state						  *
  * 03-09-2015	file created                                              *
  **************************************************************************/
 
@@ -44,21 +45,11 @@ class DZparams;
  ****************************************************************/
 
 // The name of the XML configuration file used for this application
-#define DZCONFIGFILE	"config/test.xml"
-
-
-
-// The default state ID, i.e. the state that is first entered when
-// the application starts
-#define DEFAULT_STATE_ID			0
-#define DEFAULT_STATE_CONSTRUCTOR	TestState
-
+#define DZCONFIGFILE	"./config/DZconfig.xml"
 
 // Physics constants
 #define FPS			60					// frames per second
 #define DELAY_TIME	(1000.0f / FPS)		// main loop total delay time
-
-
 
 // global function declarations
 extern DZobject* DZcreateObject(unsigned int object_id,

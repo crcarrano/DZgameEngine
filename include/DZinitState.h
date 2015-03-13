@@ -18,38 +18,33 @@
 /**************************************************************************
  * Change Log                                                             *
  *------------------------------------------------------------------------*
- * 03-10-2015	file created                                              *
+ * 03-13-2015	file created                                              *
  **************************************************************************/
 
-
-#ifndef DZSTATEMACHINE_H
-#define DZSTATEMACHINE_H
+#ifndef __DZINITSTATE_H__
+#define __DZINITSTATE_H__
 
 
 #include "DZstate.h"
-#include "DZxmlParser.h"
 
-
-class DZstateMachine
+class DZinitState : public DZstate
 {
 	public:
-		DZstateMachine();
-		~DZstateMachine();
+		DZinitState() : DZstate()
+		{
+		}
 
-		void	newState(DZstate* state_ptr);
-		void 	pauseState();
-		void	resumeState();
+		virtual unsigned int getStateID() const
+		{
+			return 0;
+		}
 
-		void	update();
-		void	render();
-
-		DZxmlParser* Parser() { return parserPtr; }
+		virtual void onEnter();
+		virtual void update();
+		virtual void render();
 
 	protected:
 	private:
-		DZstate*     currentState;
-		DZstate*     pausedState;
-		DZxmlParser* parserPtr;
 };
 
-#endif // DZSTATEMACHINE_H
+#endif

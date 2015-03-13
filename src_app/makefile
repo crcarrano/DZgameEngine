@@ -27,14 +27,15 @@
 
 
 INC_DIR = $(PWD)/../include
+INC_MOD_DIR = $(PWD)/../src_mod_xml
 SDL_INC = /usr/include/SDL2
 OBJ_DIR = $(PWD)/../obj
 
 INCLUDE = $(INC_DIR)/*.h
 
 CC = g++
-CFLAGS = -Wall -ggdb -Og -I$(INC_DIR) -I$(SDL_INC)
-#CFLAGS = -Wall -O1 -s -I$(INC_DIR) -I$(SDL_INC)
+CFLAGS = -Wall -ggdb -Og -I$(INC_DIR) -I$(SDL_INC) -I$(INC_MOD_DIR)
+#CFLAGS = -Wall -O1 -s -I$(INC_DIR) -I$(SDL_INC) -I$(INC_MOD_DIR)
 
 LIBS =
 

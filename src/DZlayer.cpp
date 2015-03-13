@@ -22,34 +22,75 @@
  **************************************************************************/
 
 
-#ifndef DZSTATEMACHINE_H
-#define DZSTATEMACHINE_H
+
+#include "DZlayer.h"
+#include "DZlogger.h"
 
 
-#include "DZstate.h"
-#include "DZxmlParser.h"
-
-
-class DZstateMachine
+DZlayer::DZlayer()
 {
-	public:
-		DZstateMachine();
-		~DZstateMachine();
+	DZ_LOG(DZ_LOG_TRACE, "Creating layer");
+	Width = 0;
+	Height = 0;
+	Id = 0;
+}
 
-		void	newState(DZstate* state_ptr);
-		void 	pauseState();
-		void	resumeState();
 
-		void	update();
-		void	render();
+DZlayer::~DZlayer()
+{
+	DZ_LOG(DZ_LOG_TRACE, "Destroying layer");
+}
 
-		DZxmlParser* Parser() { return parserPtr; }
 
-	protected:
-	private:
-		DZstate*     currentState;
-		DZstate*     pausedState;
-		DZxmlParser* parserPtr;
-};
 
-#endif // DZSTATEMACHINE_H
+void DZlayer::setWidth(unsigned int width)
+{
+	Width = width;
+}
+
+
+void DZlayer::setHeight(unsigned int height)
+{
+	Height = height;
+}
+
+
+void DZlayer::setGid(unsigned int index, unsigned int gid)
+{
+	Gid[index] = gid;
+}
+
+
+void DZlayer::setID(unsigned int id)
+{
+	Id = id;
+}
+
+
+unsigned int DZlayer::getWidth()
+{
+	return Width;
+}
+
+
+unsigned int DZlayer::getHeight()
+{
+	return Height;
+}
+
+
+unsigned int DZlayer::getGid(unsigned int index)
+{
+	return Gid[index];
+}
+
+unsigned int DZlayer::getGidNum()
+{
+	return Gid.getSize();
+}
+
+unsigned int DZlayer::getID()
+{
+	return Id;
+}
+

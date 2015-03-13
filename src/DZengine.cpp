@@ -18,11 +18,14 @@
 /**************************************************************************
  * Change Log                                                             *
  *------------------------------------------------------------------------*
+ * 03-10-2015	removed comments for missing classes					  *
  * 03-07-2015	file created                                              *
  **************************************************************************/
 
 #include "DZengine.h"
 #include "DZlogger.h"
+#include "DZinitState.h"
+#include "DZstateMachine.h"
 
 
 SDL_Renderer*	DZengine::rendererPtr;
@@ -132,8 +135,8 @@ bool DZengine::init(const char* title, int x_pos, int y_pos, int width, int heig
 	inputHandlerPtr->joystick_init();
 
 	// create state machine and initialize default state
-//	fsmPtr = new DZstateMachine();							CRC
-//	fsmPtr->newState(new DEFAULT_STATE_CONSTRUCTOR());							CRC
+	fsmPtr = new DZstateMachine();
+	fsmPtr->newState(new DZinitState());
 
 	DZ_LOG(DZ_LOG_INFO, "init successfully completed");
 	// everything inited successfully, start the main loop
@@ -164,7 +167,7 @@ void DZengine::event_handler()
 
 void DZengine::update()
 {
-//	fsmPtr->update();			CRC
+	fsmPtr->update();
 }
 
 //--------------------------------------------------------------------------
@@ -173,7 +176,7 @@ void DZengine::render()
 {
 	SDL_SetRenderDrawColor(rendererPtr, 0,0,0,0);
 	SDL_RenderClear(rendererPtr);
-//	fsmPtr->render();								CRC
+	fsmPtr->render();
 	SDL_RenderPresent(rendererPtr);
 }
 

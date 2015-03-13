@@ -22,34 +22,61 @@
  **************************************************************************/
 
 
-#ifndef DZSTATEMACHINE_H
-#define DZSTATEMACHINE_H
 
+#ifndef DZSTATE_H
+#define DZSTATE_H
 
-#include "DZstate.h"
+#include "DZarray.h"
+#include "DZobject.h"
 #include "DZxmlParser.h"
+#include "DZlevel.h"
 
+class DZstateMachine;
 
-class DZstateMachine
+/*****************************************************************
+ *
+ * Class:		DZstate
+ *
+ * Description:	Pure virtual class. Defines the class of
+ *				state objects that make a finite state
+ *				machine. All the states of the FSM inherit
+ *				from this class
+ *
+ * Interface:	update()		Update status of all the
+ *								general objects.
+ *				render()		Renders all the general
+ *								objects.
+ *				onEnter()		Procedure to be executed
+ *								when entering the state.
+ *				onExit()		Procedure to be executed
+ *								when leaving the state.
+ *				getStateID()	returns the state ID.
+ *
+ ****************************************************************/
+class DZstate
 {
 	public:
-		DZstateMachine();
-		~DZstateMachine();
+		DZstate();
+		virtual ~DZstate() {}
 
-		void	newState(DZstate* state_ptr);
-		void 	pauseState();
-		void	resumeState();
+		virtual void onEnter();
+		virtual void onExit();
 
-		void	update();
-		void	render();
+		virtual void update();
+		virtual void render();
 
-		DZxmlParser* Parser() { return parserPtr; }
+		virtual void add_texture(const char* filename, unsigned int id);
+		DZtextureManager* getTextureManager();
+
+		virtual unsigned int getStateID() const = 0;
 
 	protected:
+		DZarray<DZobject*>  objectList;
+		DZtextureManager*   textureManagerPtr;
+		DZlevel*	    	levelPtr;
+		DZstateMachine*		fsmPtr;
+
 	private:
-		DZstate*     currentState;
-		DZstate*     pausedState;
-		DZxmlParser* parserPtr;
 };
 
-#endif // DZSTATEMACHINE_H
+#endif // DZSTATE_H

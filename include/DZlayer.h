@@ -22,34 +22,38 @@
  **************************************************************************/
 
 
-#ifndef DZSTATEMACHINE_H
-#define DZSTATEMACHINE_H
+#ifndef DZLAYER_H
+#define DZLAYER_H
+
+#include "DZarray.h"
 
 
-#include "DZstate.h"
-#include "DZxmlParser.h"
 
 
-class DZstateMachine
+
+class DZlayer
 {
 	public:
-		DZstateMachine();
-		~DZstateMachine();
+		DZlayer();
+		~DZlayer();
 
-		void	newState(DZstate* state_ptr);
-		void 	pauseState();
-		void	resumeState();
+		void setWidth(unsigned int width);
+		void setHeight(unsigned int height);
+		void setGid(unsigned int index, unsigned int gid);
+		void setID(unsigned int id);
 
-		void	update();
-		void	render();
-
-		DZxmlParser* Parser() { return parserPtr; }
+		unsigned int getWidth();
+		unsigned int getHeight();
+		unsigned int getGid(unsigned int index);
+		unsigned int getGidNum();
+		unsigned int getID();
 
 	protected:
 	private:
-		DZstate*     currentState;
-		DZstate*     pausedState;
-		DZxmlParser* parserPtr;
+		DZarray<unsigned int> Gid;	// grid ID
+		unsigned int Width;			// width in tiles
+		unsigned int Height;		// height in tiles
+		unsigned int Id;			// layer ID
 };
 
-#endif // DZSTATEMACHINE_H
+#endif // DZLAYER_H

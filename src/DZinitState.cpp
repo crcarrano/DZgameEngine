@@ -18,38 +18,31 @@
 /**************************************************************************
  * Change Log                                                             *
  *------------------------------------------------------------------------*
- * 03-10-2015	file created                                              *
+ * 03-13-2015	file created                                              *
  **************************************************************************/
 
-
-#ifndef DZSTATEMACHINE_H
-#define DZSTATEMACHINE_H
-
-
-#include "DZstate.h"
-#include "DZxmlParser.h"
+#include "DZinitState.h"
+#include "DZengine.h"
 
 
-class DZstateMachine
+void DZinitState::onEnter()
 {
-	public:
-		DZstateMachine();
-		~DZstateMachine();
+	textureManagerPtr = new DZtextureManager;
+	if (textureManagerPtr == 0)
+	{
+		DZ_LOG(DZ_LOG_WARN, "Could not allocate texture manager");
+		return;
+	}
 
-		void	newState(DZstate* state_ptr);
-		void 	pauseState();
-		void	resumeState();
+	textureManagerPtr->load("assets/DZengine_logo.png", 0);
+}
 
-		void	update();
-		void	render();
+void DZinitState::update()
+{
+}
 
-		DZxmlParser* Parser() { return parserPtr; }
+void DZinitState::render()
+{
+	textureManagerPtr->draw(0, 0, 0, 0, 0, 0, DZengine::getWindowWidth(), DZengine::getWindowHeight());
+}
 
-	protected:
-	private:
-		DZstate*     currentState;
-		DZstate*     pausedState;
-		DZxmlParser* parserPtr;
-};
-
-#endif // DZSTATEMACHINE_H

@@ -1,0 +1,57 @@
+<DZENGINE>
+	<STATE id="0" name="default_state">
+		<TEXTURES>
+			<TEXTURE id="1" filename="assets/rider.bmp" />
+			<TEXTURE id="2" filename="assets/helicopter.png" />
+			<TEXTURE id="3" filename="assets/alien-night.jpg" />
+		</TEXTURES>
+		<OBJECTS>
+			<OBJECT id="1" name="Background" collision="none">
+				<POSITION x="0" y="0" />
+				<VELOCITY x="0" y="0" />	
+				<ACCELERATION x="0" y="0" />
+				<ROTATION_CENTER x="0" y="0" />
+				<ANGLE p="0" v="0" a="0" />
+				<WIDTH w="0" />	
+				<HEIGHT h="0" />
+				<NUMFRAMES n="0" />
+				<CURRENTROW r="0" />
+				<CURRENTFRAME f="0" />
+				<NUMROWS nr="0" />
+				<TEXTUREID id="3" />
+				<FLIP flag="SDL_FLIP_NONE" />
+			</OBJECT>
+			<OBJECT id="2" name="Rider" collision="circular">
+				<POSITION x="0" y="0" />
+				<VELOCITY x="1" y="2" />	
+				<ACCELERATION x="0" y="0" />	
+				<ROTATION_CENTER x="60" y="40" />
+				<ANGLE p="0" v="2" a="0" />
+				<WIDTH w="123" />	
+				<HEIGHT h="87" />
+				<NUMFRAMES n="0" />
+				<CURRENTROW r="0" />
+				<CURRENTFRAME f="0" />
+				<NUMROWS nr="0" />
+				<TEXTUREID id="1" />
+				<FLIP flag="SDL_FLIP_NONE" />
+			</OBJECT>
+			<OBJECT id="3" name="Helicopter" collision="box">
+				<POSITION x="200" y="350" />
+				<VELOCITY x="-1" y="0" />	
+				<ACCELERATION x="0" y="0" />	
+				<ROTATION_CENTER x="0" y="0" />
+				<ANGLE p="0" v="0" a="0" />
+				<WIDTH w="128" />	
+				<HEIGHT h="55" />
+				<NUMFRAMES n="5" />
+				<CURRENTROW r="1" />
+				<CURRENTFRAME f="1" />
+				<NUMROWS nr="1" />
+				<TEXTUREID id="2" />
+				<FLIP flag="SDL_FLIP_NONE" />
+			</OBJECT>
+		</OBJECTS>
+	</STATE>
+</DZENGINE>
+
