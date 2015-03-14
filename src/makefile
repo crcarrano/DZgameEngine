@@ -60,6 +60,10 @@ $(OBJ_DIR)/DZstate.o \
 $(OBJ_DIR)/DZstateMachine.o \
 $(OBJ_DIR)/DZinitState.o \
 $(OBJ_DIR)/DZcreateObject.o \
+$(OBJ_DIR)/DZgraph.o \
+$(OBJ_DIR)/DZsdlObject.o \
+$(OBJ_DIR)/DZobject.o \
+$(OBJ_DIR)/DZttf.o \
 $(END)
 
 ################################################
