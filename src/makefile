@@ -64,6 +64,7 @@ $(OBJ_DIR)/DZgraph.o \
 $(OBJ_DIR)/DZsdlObject.o \
 $(OBJ_DIR)/DZobject.o \
 $(OBJ_DIR)/DZttf.o \
+$(OBJ_DIR)/DZtimer.o \
 $(END)
 
 ################################################

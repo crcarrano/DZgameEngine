@@ -1,6 +1,3 @@
-#ifndef DZPROJECT_H_INCLUDED
-#define DZPROJECT_H_INCLUDED
-
 /**************************************************************************
  *   Copyright (C) 2015 by Carlo Carrano                                  *
  *   crc@dazzlingsolutions.com                                            *
@@ -21,48 +18,71 @@
 /**************************************************************************
  * Change Log                                                             *
  *------------------------------------------------------------------------*
- * 03-13-2015	removed references to default state						  *
- * 03-09-2015	file created                                              *
+ * 03-14-2015	file created                                              *
  **************************************************************************/
 
-#include "DZarray.h"
-
-// Forward declarations
-class DZobject;
-class DZparams;
+#include "DZtimer.h"
+#include "DZlogger.h"
+#include "DZproject.h"
 
 
-/*****************************************************************
- *
- * Component:		DZproject.h
- *
- * Description:		This file lists all the specific definitions
- *					for the application being developed.
- *					Update all the definitions in this file
- *					with the appropriate information for the
- *					application you are developing.
- *
- ****************************************************************/
-
-// The name of the XML configuration file used for this application
-#define DZCONFIGFILE	"./config/DZconfig.xml"
-
-// Physics constants
-#define FPS			60					// frames per second
-#define DELAY_TIME	(1000.0f / FPS)		// main loop total delay time
-
-// List of the user defined events that can be processed in
-// DZinputHandler::eventHandler()
-typedef enum
+DZtimer::DZtimer(Uint32 interval, Uint32 repeat_value)
 {
-	 DZ_USER_EVENT_NONE = 0
-	,DZ_USER_EVENT_TIMER
-} DZ_USER_EVENT;
+	DZ_LOG2(DZ_LOG_TRACE, "create timer (interval, repeat)", interval, repeat_value);
+	length = interval;
+	repeat = repeat_value;
+	timerID = SDL_AddTimer(length, DZtimer::timerCallback, this);
+}
 
+DZtimer::~DZtimer()
+{
+	DZ_LOG2(DZ_LOG_TRACE, "deleting timer (Interval, repeat)", length, repeat);
+	if (timerID != 0)
+	{
+		SDL_RemoveTimer(timerID);
+	}
+}
 
-// global function declarations
-extern DZobject* DZcreateObject(unsigned int object_id,
-								DZparams* parms_ptr,
-								DZarray<DZobject*>* obj_list);
+Uint32 DZtimer::timerCallback(Uint32 interval, void* param)
+{
+	DZ_LOG(DZ_LOG_TRACE, "Entering...");
 
-#endif // DZPROJECT_H_INCLUDED
+	DZtimer* timer = (DZtimer*) param;
+	SDL_Event event;
+	SDL_UserEvent user_event;
+
+	user_event.type = SDL_USEREVENT;
+	user_event.code = (Sint32) DZ_USER_EVENT_TIMER;
+	user_event.data1 = (void*) timer;
+	user_event.data2 = NULL;
+
+	event.type = SDL_USEREVENT;
+	event.user = user_event;
+
+	SDL_PushEvent(&event);
+
+	switch (timer->repeat)
+	{
+		case 0:
+			timer->timerID = 0;
+			delete timer;
+			break;
+
+		case DZ_FOREVER_TIMER:
+			timer->timerID = SDL_AddTimer(timer->length, timer->timerCallback, timer);
+			break;
+
+		default:
+			timer->repeat--;
+			timer->timerID = SDL_AddTimer(timer->length, timer->timerCallback, timer);
+			break;
+	}
+
+	return interval;
+}
+
+void DZtimer::processTimer(DZtimer* timer)
+{
+	DZ_LOG(DZ_LOG_WARN, "Derived DZtimer class not instantiated - using base class");
+}
+

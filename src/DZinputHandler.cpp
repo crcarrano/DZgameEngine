@@ -18,12 +18,14 @@
 /**************************************************************************
  * Change Log                                                             *
  *------------------------------------------------------------------------*
+ * 03-14-2015	added handling of SDL_USEREVENT							  *
  * 03-07-2015	file created                                              *
  **************************************************************************/
 
 
 #include "DZinputHandler.h"
 #include "DZengine.h"
+#include "DZtimer.h"
 
 DZinputHandler::DZinputHandler()
 {
@@ -170,6 +172,25 @@ void DZinputHandler::eventHandler(DZengine* engine)
 			case SDL_MOUSEMOTION:
 				mouse.eventHandler(event);
 				break;
+
+			case SDL_USEREVENT:
+			{
+				SDL_UserEvent user_event = event.user;
+				switch (user_event.code)
+				{
+					case DZ_USER_EVENT_TIMER:
+					{
+						DZtimer* timer = (DZtimer*) user_event.data1;
+						timer->processTimer(timer);
+						break;
+					}
+
+					default:
+						DZ_LOG1(DZ_LOG_WARN, "Undefined user event; code = ", user_event.code);
+						break;
+				}
+				break;
+			}
 
 			default:
 				break;
