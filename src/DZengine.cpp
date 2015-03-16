@@ -18,6 +18,8 @@
 /**************************************************************************
  * Change Log                                                             *
  *------------------------------------------------------------------------*
+ * 03-15-2015	Added call to IMG_Quit() when shutting down the			  *
+ * 				application												  *
  * 03-10-2015	removed comments for missing classes					  *
  * 03-07-2015	file created                                              *
  **************************************************************************/
@@ -153,6 +155,7 @@ void DZengine::shutdown()
 
 	SDL_DestroyWindow(windowPtr);
 	SDL_DestroyRenderer(rendererPtr);
+	IMG_Quit();
 	SDL_Quit();
 }
 
