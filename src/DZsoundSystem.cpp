@@ -30,14 +30,13 @@ DZsoundSystem::DZsoundSystem()
 {
 	DZ_LOG(DZ_LOG_TRACE, "Initializing sound system");
 
-	// sound parameters default values
-	int			_rate = 22050;
-	Uint16		_format = AUDIO_S16;
-	int			_channels = 2;
+	int			_rate;
+	Uint16		_format;
+	int			_channels;
+	int			num_chunk_decoders;
 	char		log[256];
 	int			log_idx = 0;
 	const char*	format_str;
-	int			num_chunk_decoders = 4096;
 
 	init();			// loads all the configuration parameters in the
 					// class attributes; if configuration data is not
@@ -55,45 +54,43 @@ DZsoundSystem::DZsoundSystem()
 	{
 		isOpen = true;
 
-		// print sound system parameters if log info is enabled
-
-		(void) Mix_QuerySpec(&_rate, &_format, &_channels);
-		switch(_format)
-		{
-			case AUDIO_U8:		format_str = "U8"; break;
-			case AUDIO_S8:		format_str = "S8"; break;
-			case AUDIO_U16LSB:	format_str = "U16LSB"; break;
-			case AUDIO_S16LSB:	format_str = "S16LSB"; break;
-			case AUDIO_U16MSB:	format_str = "U16MSB"; break;
-			case AUDIO_S16MSB:	format_str = "S16MSB"; break;
-			default:			format_str = "Unknown"; break;
-		}
-
-		num_chunk_decoders = Mix_GetNumChunkDecoders();
-
-
-		log_idx = sprintf(log, "\t\t rate               = %d\n"
-							   "\t\t format             = %s\n"
-							   "\t\t channels           = %d\n"
-							   "\t\t number of decoders = %d\n",
-					 			_rate,
-					 			format_str,
-					 			_channels,
-					 			num_chunk_decoders);
-
-		for (int i = 0 ; i < num_chunk_decoders ; i++)
-		{
-			log_idx += sprintf(log+log_idx, "\t\t\t decoder %d = %s\n",
-							   i+1, Mix_GetChunkDecoder(i));
-		}
-
-		DZ_LOG_STR(DZ_LOG_INFO,
-				   "Opened sound system with the following parameters:\n", 
-				   log);
-
 		loadSoundEffectList();
 		loadMusicList();
 	}
+
+	(void) Mix_QuerySpec(&_rate, &_format, &_channels);
+	switch(_format)
+	{
+		case AUDIO_U8:		format_str = "U8"; break;
+		case AUDIO_S8:		format_str = "S8"; break;
+		case AUDIO_U16LSB:	format_str = "U16LSB"; break;
+		case AUDIO_S16LSB:	format_str = "S16LSB"; break;
+		case AUDIO_U16MSB:	format_str = "U16MSB"; break;
+		case AUDIO_S16MSB:	format_str = "S16MSB"; break;
+		default:			format_str = "Unknown"; break;
+	}
+
+	num_chunk_decoders = Mix_GetNumChunkDecoders();
+
+
+	log_idx = sprintf(log, "\t rate               = %d\n"
+						   "\t\t format             = %s\n"
+						   "\t\t channels           = %d\n"
+						   "\t\t number of decoders = %d",
+				 			_rate,
+				 			format_str,
+				 			_channels,
+				 			num_chunk_decoders);
+
+	for (int i = 0 ; i < num_chunk_decoders ; i++)
+	{
+		log_idx += sprintf(log+log_idx, "\n\t\t  decoder %d = %s",
+						   i+1, Mix_GetChunkDecoder(i));
+	}
+
+	DZ_LOG_STR(DZ_LOG_INFO,
+			   "Opened sound system with the following parameters:\n", 
+			   log);
 }
 
 
@@ -104,6 +101,8 @@ DZsoundSystem::~DZsoundSystem()
 {
 	int list_size;
 	int i;
+
+	DZ_LOG(DZ_LOG_TRACE, "Terminating sound system");
 
 	if (isOpen == true)
 	{
@@ -379,4 +378,8 @@ void DZsoundSystem::changeMusicVolume(int volume)
 //
 void DZsoundSystem::init()
 {
+	rate = 22050;
+	format = MIX_DEFAULT_FORMAT;
+	channels = 2;
+	chunkSize = 4096;
 }

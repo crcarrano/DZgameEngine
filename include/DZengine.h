@@ -18,6 +18,7 @@
 /**************************************************************************
  * Change Log                                                             *
  *------------------------------------------------------------------------*
+ * 03-18-2015	Added sound system handler.								  *
  * 03-07-2015	file created                                              *
  **************************************************************************/
 
@@ -31,6 +32,7 @@
 #include "DZxmlParser.h"
 #include "DZproject.h"
 #include "DZstateMachine.h"
+#include "DZsoundSystem.h"
 
 
 // Window flags, to be used as the last parameter in the init function
@@ -138,6 +140,13 @@ class DZengine
 		static DZinputHandler* getInput();
 
 		//--------------------------------------------------------
+		// Name:		DZengine::getSoundSystem
+		// Description:	returns a pointer to the sound system handler
+		// Arguments:	void
+		//--------------------------------------------------------
+		static DZsoundSystem* getSoundSystem();
+
+		//--------------------------------------------------------
 		// Name:		DZengine::getWindowWidth
 		// Description:	returns the window width
 		// Arguments:	void
@@ -196,6 +205,7 @@ class DZengine
 		static DZinputHandler*	inputHandlerPtr;
 		static SDL_Renderer*	rendererPtr;
 		static DZstateMachine*	fsmPtr;
+		static DZsoundSystem*	soundSystemPtr;
 };
 
 #endif // DZENGINE_H

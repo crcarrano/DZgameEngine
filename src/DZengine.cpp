@@ -18,6 +18,7 @@
 /**************************************************************************
  * Change Log                                                             *
  *------------------------------------------------------------------------*
+ * 03-18-2015	Added sound system handler								  *
  * 03-15-2015	Added call to IMG_Quit() when shutting down the			  *
  * 				application												  *
  * 03-10-2015	removed comments for missing classes					  *
@@ -33,6 +34,7 @@
 SDL_Renderer*	DZengine::rendererPtr;
 DZstateMachine*	DZengine::fsmPtr;
 DZinputHandler*	DZengine::inputHandlerPtr;
+DZsoundSystem*	DZengine::soundSystemPtr;
 unsigned int	DZengine::windowWidth;
 unsigned int	DZengine::windowHeight;
 
@@ -44,6 +46,7 @@ DZengine::DZengine()
 	DZ_LOG(DZ_LOG_TRACE, "Creating engine");
 	inputHandlerPtr = 0;
 	rendererPtr = 0;
+	soundSystemPtr = 0;
 	fsmPtr = 0;
 	isLoopActive = false;
 }
@@ -136,6 +139,9 @@ bool DZengine::init(const char* title, int x_pos, int y_pos, int width, int heig
 	inputHandlerPtr = new DZinputHandler();
 	inputHandlerPtr->joystick_init();
 
+	// initialize sound system
+	soundSystemPtr = new DZsoundSystem();
+	
 	// create state machine and initialize default state
 	fsmPtr = new DZstateMachine();
 	fsmPtr->newState(new DZinitState());
@@ -152,6 +158,11 @@ bool DZengine::init(const char* title, int x_pos, int y_pos, int width, int heig
 void DZengine::shutdown()
 {
 	DZ_LOG(DZ_LOG_TRACE, "Entering...");
+
+	if (soundSystemPtr != 0)
+	{
+		delete soundSystemPtr;
+	}
 
 	SDL_DestroyWindow(windowPtr);
 	SDL_DestroyRenderer(rendererPtr);
@@ -211,12 +222,21 @@ DZinputHandler* DZengine::getInput()
 	return inputHandlerPtr;
 }
 
+//--------------------------------------------------------------------------
+
+DZsoundSystem* DZengine::getSoundSystem()
+{
+	return soundSystemPtr;
+}
+
+//--------------------------------------------------------------------------
 
 unsigned int DZengine::getWindowWidth()
 {
 	return windowWidth;
 }
 
+//--------------------------------------------------------------------------
 
 unsigned int DZengine::getWindowHeight()
 {
