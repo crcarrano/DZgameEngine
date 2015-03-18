@@ -36,6 +36,7 @@ CFLAGS = -Wall -ggdb -Og
 LIBS = `sdl2-config --cflags --libs` \
 /usr/lib64/libSDL2_image.so \
 /usr/lib64/libSDL2_ttf.so \
+/usr/lib64/libSDL2_mixer.so \
 $(END)
 
 # Targets
