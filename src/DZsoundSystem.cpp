@@ -22,6 +22,8 @@
  **************************************************************************/
 
 #include "DZsoundSystem.h"
+#include "DZproject.h"
+#include "DZxmlParser.h"
 
 //
 // constructor
@@ -37,6 +39,9 @@ DZsoundSystem::DZsoundSystem()
 	char		log[256];
 	int			log_idx = 0;
 	const char*	format_str;
+
+	soundEffectListPtr = new DZarray<SOUND_EFFECT*>;
+	musicListPtr = new DZarray<MUSIC_PIECE*>;
 
 	init();			// loads all the configuration parameters in the
 					// class attributes; if configuration data is not
@@ -106,25 +111,35 @@ DZsoundSystem::~DZsoundSystem()
 
 	if (isOpen == true)
 	{
-		list_size = soundEffectList.getSize();
+		list_size = soundEffectListPtr->getSize();
 		for (i=0 ; i < list_size ; i++)
 		{
-			if (soundEffectList[i].effect != 0)
+			if ((*soundEffectListPtr)[i] != 0)
 			{
-				Mix_FreeChunk(soundEffectList[i].effect);
+				if ((*soundEffectListPtr)[i]->effect != 0)
+				{
+					Mix_FreeChunk((*soundEffectListPtr)[i]->effect);
+				}
+				delete (*soundEffectListPtr)[i];
 			}
 		}
+		delete soundEffectListPtr;
 
 		Mix_CloseAudio();
 
-		list_size = musicList.getSize();
+		list_size = musicListPtr->getSize();
 		for (i=0 ; i < list_size ; i++)
 		{
-			if (musicList[i].music != 0)
+			if ((*musicListPtr)[i] != 0)
 			{
-				Mix_FreeMusic(musicList[i].music);
+				if ((*musicListPtr)[i]->music != 0)
+				{
+					Mix_FreeMusic((*musicListPtr)[i]->music);
+				}
+				delete (*musicListPtr)[i];
 			}
 		}
+		delete musicListPtr;
 
 		isOpen = false;
 	}
@@ -135,6 +150,15 @@ DZsoundSystem::~DZsoundSystem()
 // sound effect methods
 //
 
+bool DZsoundSystem::isEffectAvailable(unsigned int id)
+{
+	if ((*soundEffectListPtr)[id] != 0)
+	{
+		return true;
+	}
+	return false;
+}
+
 void DZsoundSystem::loadSoundEffectList()
 {
 	if (isOpen == false)
@@ -144,7 +168,7 @@ void DZsoundSystem::loadSoundEffectList()
 	}
 
 	// get the number of sound effects
-	int list_size = soundEffectList.getSize();
+	int list_size = soundEffectListPtr->getSize();
 
 	// allocate a separate channel for each sound effect, so that
 	// we will be able to play any number of them simultaneously (almost)
@@ -154,16 +178,20 @@ void DZsoundSystem::loadSoundEffectList()
 	// relative to the master volume
 	for (int i=0 ; i < list_size ; i++)
 	{
-		soundEffectList[i].effect = Mix_LoadWAV(soundEffectList[i].filename.c_str());
-		if (soundEffectList[i].effect == 0)
+		if ((*soundEffectListPtr)[i] == 0)
 		{
-			DZ_LOG_STR(DZ_LOG_WARN, "Could not load effect file ", soundEffectList[i].filename.c_str());
+			continue;
+		}
+		(*soundEffectListPtr)[i]->effect = Mix_LoadWAV((*soundEffectListPtr)[i]->filename.c_str());
+		if ((*soundEffectListPtr)[i]->effect == 0)
+		{
+			DZ_LOG_STR(DZ_LOG_WARN, "Could not load effect file ", (*soundEffectListPtr)[i]->filename.c_str());
 		}
 		else
 		{
-			DZ_LOG_STR(DZ_LOG_TRACE, "Loaded effect file ", soundEffectList[i].filename.c_str());
+			DZ_LOG_STR(DZ_LOG_TRACE, "Loaded effect file ", (*soundEffectListPtr)[i]->filename.c_str());
 
-			(void) Mix_VolumeChunk(soundEffectList[i].effect, soundEffectList[i].volume);
+			(void) Mix_VolumeChunk((*soundEffectListPtr)[i]->effect, (*soundEffectListPtr)[i]->volume);
 		}
 	}
 }
@@ -173,7 +201,10 @@ void DZsoundSystem::setEffectsMasterVolume(int volume)
 {
 	if (isOpen == true)
 	{
-		Mix_Volume(-1, volume);
+		for (int i=0 ; i < channels ; i++)
+		{
+			Mix_Volume(i, volume);
+		}
 	}
 }
 
@@ -184,11 +215,11 @@ void DZsoundSystem::playEffect(unsigned int id, int number_of_loops, int fade_in
 	{
 		if (fade_in_msec == 0)
 		{
-			Mix_PlayChannel((int) id, soundEffectList[id].effect, number_of_loops);
+			Mix_PlayChannel((int) id, (*soundEffectListPtr)[id]->effect, number_of_loops);
 		}
 		else
 		{
-			Mix_FadeInChannel((int) id, soundEffectList[id].effect, number_of_loops, fade_in_msec);
+			Mix_FadeInChannel((int) id, (*soundEffectListPtr)[id]->effect, number_of_loops, fade_in_msec);
 		}
 	}
 }
@@ -256,6 +287,15 @@ bool DZsoundSystem::isEffectPaused(unsigned int id)
 ////////////////////////////////////////////////////////////////////////////////////////
 // music methods
 //
+bool DZsoundSystem::isMusicAvailable(unsigned int id)
+{
+	if ((*musicListPtr)[id] != 0)
+	{
+		return true;
+	}
+	return false;
+}
+
 void DZsoundSystem::loadMusicList()
 {
 	if (isOpen == false)
@@ -265,20 +305,24 @@ void DZsoundSystem::loadMusicList()
 	}
 
 	// get the number of music pieces
-	int list_size = musicList.getSize();
+	int list_size = musicListPtr->getSize();
 
 	// for each music piece, allocate it in memory and set its own volume,
 	// relative to the master volume
 	for (int i=0 ; i < list_size ; i++)
 	{
-		musicList[i].music = Mix_LoadMUS(musicList[i].filename.c_str());
-		if (musicList[i].music == 0)
+		if ((*musicListPtr)[i] == 0)
 		{
-			DZ_LOG_STR(DZ_LOG_WARN, "Could not load music file ", musicList[i].filename.c_str());
+			continue;
+		}
+		(*musicListPtr)[i]->music = Mix_LoadMUS((*musicListPtr)[i]->filename.c_str());
+		if ((*musicListPtr)[i]->music == 0)
+		{
+			DZ_LOG_STR(DZ_LOG_WARN, "Could not load music file ", (*musicListPtr)[i]->filename.c_str());
 		}
 		else
 		{
-			DZ_LOG_STR(DZ_LOG_TRACE, "Loaded music file ", musicList[i].filename.c_str());
+			DZ_LOG_STR(DZ_LOG_TRACE, "Loaded music file ", (*musicListPtr)[i]->filename.c_str());
 		}
 	}
 }
@@ -290,15 +334,13 @@ void DZsoundSystem::playMusic(unsigned int id, int number_of_loops, int fade_in_
 {
 	if (isOpen == true)
 	{
-		(void) Mix_VolumeMusic(musicList[id].volume);
-
 		if (fade_in_msec == 0)
 		{
-			Mix_PlayMusic(musicList[id].music, number_of_loops);
+			Mix_PlayMusic((*musicListPtr)[id]->music, number_of_loops);
 		}
 		else
 		{
-			Mix_FadeInMusic(musicList[id].music, number_of_loops, fade_in_msec);
+			Mix_FadeInMusic((*musicListPtr)[id]->music, number_of_loops, fade_in_msec);
 		}
 	}
 }
@@ -323,7 +365,6 @@ void DZsoundSystem::resumeMusic()
 		(void) Mix_ResumeMusic();
 	}
 }
-
 
 
 void DZsoundSystem::stopMusic(int fade_out_msec)
@@ -378,8 +419,101 @@ void DZsoundSystem::changeMusicVolume(int volume)
 //
 void DZsoundSystem::init()
 {
+	unsigned int id;
+	string fname;
+
+	DZ_LOG(DZ_LOG_TRACE, "...entering...");
+	
+	// initialize default values
 	rate = 22050;
 	format = MIX_DEFAULT_FORMAT;
 	channels = 2;
 	chunkSize = 4096;
+
+	// read configuration file
+	DZxmlParser	doc(DZCONFIGFILE);
+
+	// read sound element
+	if (doc.getSound() == 0)
+	{
+		DZ_LOG(DZ_LOG_WARN, "Cannot read sound system configuration; using defaults");
+		return;
+	}
+
+	// get sound system configuration parameters
+	rate = doc.getSoundSample();
+	format = doc.getSoundFormat();
+	channels = doc.getSoundChannels();
+	chunkSize = doc.getSoundChunks();
+
+	DZ_LOG(DZ_LOG_TRACE, "Reading music elements");
+
+	// set intro music soundtrack, defined in DZproject.h
+	if (DZ_INTRO_AVAILABLE)
+	{
+		(*musicListPtr)[0] = new MUSIC_PIECE;
+		fname.assign(DZ_INTRO_MUSIC_FILE);
+		(*musicListPtr)[0]->filename = fname;
+	}
+	else
+	{
+		(*musicListPtr)[0] = 0;
+	}
+
+	if (doc.getMusic() == 0)
+	{
+		DZ_LOG(DZ_LOG_WARN, "Cannot read music list");
+	}
+	else
+	{
+		// set music volume
+		changeMusicVolume((int)doc.getMusicVolume());
+
+		// read and store music list
+		if (doc.getFirstPiece() == 0)
+		{
+			DZ_LOG(DZ_LOG_WARN, "Cannot read music piece");
+		}
+		else
+		{
+			do
+			{
+				id = doc.getPieceID();
+				(*musicListPtr)[id] = new MUSIC_PIECE;
+				fname.assign(doc.getPieceFilename());
+				DZ_LOG_STR(DZ_LOG_TRACE, "Storing Music Piece filename: ", fname.c_str());
+				(*musicListPtr)[id]->filename = fname;
+			} while (doc.getNextPiece() != 0);
+		}
+	}
+
+	DZ_LOG(DZ_LOG_TRACE, "Reading sound effect elements");
+
+	if (doc.getEffects() == 0)
+	{
+		DZ_LOG(DZ_LOG_WARN, "Cannot read sound effects list");
+	}
+	else
+	{
+		// set sound effects master volume
+		setEffectsMasterVolume((int)doc.getEffectMasterVolume());
+
+		// read and store sound effects list
+		if (doc.getFirstEffect() == 0)
+		{
+			DZ_LOG(DZ_LOG_WARN, "Cannot read sound effect");
+		}
+		else
+		{
+			do
+			{
+				id = doc.getEffectID();
+				(*soundEffectListPtr)[id] = new SOUND_EFFECT;
+				(*soundEffectListPtr)[id]->volume = doc.getEffectVolume();
+				fname.assign(doc.getEffectFilename());
+				DZ_LOG_STR(DZ_LOG_TRACE, "Storing Sound Effect filename: ", fname.c_str());
+				(*soundEffectListPtr)[id]->filename = fname;
+			} while (doc.getNextEffect() != 0);
+		}
+	}
 }

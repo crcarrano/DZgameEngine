@@ -47,6 +47,11 @@ class DZparams;
 // The name of the XML configuration file used for this application
 #define DZCONFIGFILE	"./config/DZconfig.xml"
 
+// Intro music
+#define DZ_INTRO_MUSIC_FILE	"assets/intro.wav"
+#define	DZ_INTRO_AVAILABLE	true
+//#define	DZ_INTRO_AVAILABLE	false
+
 // Physics constants
 #define FPS			60					// frames per second
 #define DELAY_TIME	(1000.0f / FPS)		// main loop total delay time

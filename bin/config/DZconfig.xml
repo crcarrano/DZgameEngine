@@ -1,4 +1,14 @@
 <DZENGINE>
+	<SOUND sample="44100" format="0x8010" channels="2" chunks="1024">
+		<MUSIC volume="128">
+			<PIECE filename="assets/Credits.wav" id="1"/>
+			<PIECE filename="assets/Greensleaves.wav" id="2"/>
+		</MUSIC>
+		<EFFECTS volume="128">
+			<EFFECT filename="assets/trekdoor.wav" id="1" volume="100"/>
+			<EFFECT filename="assets/greeting.wav" id="2"/>
+		</EFFECTS>
+	</SOUND>
 	<STATE id="0" name="default_state">
 		<TEXTURES>
 			<TEXTURE id="1" filename="assets/rider.bmp" />

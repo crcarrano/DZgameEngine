@@ -40,6 +40,7 @@ class DZinitState : public DZstate
 		}
 
 		virtual void onEnter();
+		virtual void onExit();
 		virtual void update();
 		virtual void render();
 

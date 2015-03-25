@@ -3,3 +3,7 @@ cscope.out
 *.log
 *.o
 DZgameEngine
+*.wav
+*.WAV
+*.mp3
+

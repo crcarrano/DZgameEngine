@@ -18,6 +18,7 @@
 /**************************************************************************
  * Change Log                                                             *
  *------------------------------------------------------------------------*
+ * 03-18-2015	Added support for sound information						  *
  * 03-10-2015	file created                                              *
  **************************************************************************/
 
@@ -90,6 +91,7 @@ typedef enum
  *				getImageWidth()
  *				getImageHeight()
  *
+		//------------------------------------------------
  *				getFirstLayer()
  *				getNextLayer()
  *				getLayerName()
@@ -119,6 +121,25 @@ class DZxmlParser
 		XMLElement*			getNextTexture();
 		XMLElement*			getFirstObject();
 		XMLElement*			getNextObject();
+
+		XMLElement*			getSound();
+		unsigned int		getSoundSample();
+		unsigned int		getSoundFormat();
+		unsigned int		getSoundChannels();
+		unsigned int		getSoundChunks();
+		XMLElement*			getMusic();
+		unsigned int		getMusicVolume();
+		XMLElement*			getFirstPiece();
+		XMLElement*			getNextPiece();
+		unsigned int		getPieceID();
+		const char*			getPieceFilename();
+		XMLElement*			getEffects();
+		unsigned int		getEffectMasterVolume();
+		XMLElement*			getFirstEffect();
+		XMLElement*			getNextEffect();
+		unsigned int		getEffectID();
+		unsigned int		getEffectVolume();
+		const char*			getEffectFilename();
 
 		XMLElement*			getMap();
 		XMLElement*			getFirstTileset();
@@ -190,6 +211,11 @@ class DZxmlParser
 		XMLElement*	currentImage;
 		XMLElement*	currentLayer;
 		XMLElement*	currentTile;
+		XMLElement*	currentPiece;
+		XMLElement*	currentEffect;
+		XMLElement*	sound;
+		XMLElement*	music;
+		XMLElement*	effects;
 };
 
 #endif // DZXMLPARSER_H

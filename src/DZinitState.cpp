@@ -35,6 +35,21 @@ void DZinitState::onEnter()
 	}
 
 	textureManagerPtr->load("assets/DZengine_logo.png", 0);
+	
+	if (DZengine::getSoundSystem() != 0)
+	{
+		if (DZengine::getSoundSystem()->isMusicAvailable(0))
+		{
+			DZ_LOG(DZ_LOG_TRACE, "Starting sound track");
+			DZengine::getSoundSystem()->playMusic(0, 1, 0);
+		}
+	}
+}
+
+void DZinitState::onExit()
+{
+	DZstate::onExit();
+//	DZengine::getSoundSystem()->stopMusic(0);
 }
 
 void DZinitState::update()

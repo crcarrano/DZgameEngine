@@ -18,6 +18,7 @@
 /**************************************************************************
  * Change Log                                                             *
  *------------------------------------------------------------------------*
+ * 03-18-2015	Added support for sound information						  *
  * 03-10-2015	file created                                              *
  **************************************************************************/
 
@@ -39,6 +40,16 @@ DZxmlParser::DZxmlParser(const char* filename)
 	currentState = 0;
 	currentTexture = 0;
 	currentObject = 0;
+	currentMap = 0;
+	currentTileset = 0;
+	currentImage = 0;
+	currentLayer = 0;
+	currentTile = 0;
+	currentPiece = 0;
+	currentEffect = 0;
+	sound = 0;
+	music = 0;
+	effects = 0;
 }
 
 XMLElement* DZxmlParser::getFirstState()
@@ -49,11 +60,7 @@ XMLElement* DZxmlParser::getFirstState()
 
 XMLElement* DZxmlParser::getNextState()
 {
-	if (currentState == 0)
-	{
-		DZ_LOG(DZ_LOG_WARN, "currentState is not set");
-	}
-	else
+	if (currentState != 0)
 	{
 		currentState = currentState->NextSiblingElement();
 	}
@@ -73,11 +80,7 @@ XMLElement* DZxmlParser::getFirstTexture()
 	else
 	{
 		element = currentState->FirstChildElement("TEXTURES");
-		if (element == 0)
-		{
-			DZ_LOG(DZ_LOG_WARN, "No available textures");
-		}
-		else
+		if (element != 0)
 		{
 			currentTexture = element->FirstChildElement("TEXTURE");
 			DZ_LOG1(DZ_LOG_TRACE, "Got texture; id =", currentTexture->UnsignedAttribute("id"));
@@ -137,7 +140,190 @@ XMLElement* DZxmlParser::getNextObject()
 	return currentObject;
 }
 
+XMLElement* DZxmlParser::getSound()
+{
+	sound = doc.FirstChildElement("DZENGINE")->FirstChildElement("SOUND");
+	return sound;
+}
 
+unsigned int DZxmlParser::getSoundSample()
+{
+	if (sound == 0)
+	{
+		DZ_LOG(DZ_LOG_WARN, "No configured sound system");
+		return 0;
+	}
+
+	return sound->UnsignedAttribute("sample");
+}
+
+unsigned int DZxmlParser::getSoundFormat()
+{
+	if (sound == 0)
+	{
+		DZ_LOG(DZ_LOG_WARN, "No configured sound system");
+		return 0;
+	}
+
+	return sound->UnsignedAttribute("format");
+}
+
+unsigned int DZxmlParser::getSoundChannels()
+{
+	if (sound == 0)
+	{
+		DZ_LOG(DZ_LOG_WARN, "No configured sound system");
+		return 0;
+	}
+
+	return sound->UnsignedAttribute("channels");
+}
+
+unsigned int DZxmlParser::getSoundChunks()
+{
+	if (sound == 0)
+	{
+		DZ_LOG(DZ_LOG_WARN, "No configured sound system");
+		return 0;
+	}
+
+	return sound->UnsignedAttribute("chunks");
+}
+
+XMLElement* DZxmlParser::getMusic()
+{
+	if (sound != 0)
+	{
+		music = sound->FirstChildElement("MUSIC");
+		return music;
+	}
+	return 0;
+}
+
+unsigned int DZxmlParser::getMusicVolume()
+{
+	if (music == 0)
+	{
+		DZ_LOG(DZ_LOG_WARN, "No configured music");
+		return 0;
+	}
+
+	return music->UnsignedAttribute("volume");
+}
+
+XMLElement* DZxmlParser::getEffects()
+{
+	if (sound != 0)
+	{
+		effects = sound->FirstChildElement("EFFECTS");
+		return effects;
+	}
+	return 0;
+}
+
+unsigned int DZxmlParser::getEffectMasterVolume()
+{
+	if (effects == 0)
+	{
+		DZ_LOG(DZ_LOG_WARN, "No configured effects");
+		return 0;
+	}
+
+	return effects->UnsignedAttribute("volume");
+}
+
+XMLElement* DZxmlParser::getFirstPiece()
+{
+	currentPiece = 0;
+	if (music != 0)
+	{
+		currentPiece = music->FirstChildElement("PIECE");
+	}
+	return currentPiece;
+}
+
+XMLElement* DZxmlParser::getNextPiece()
+{
+	if (currentPiece != 0)
+	{
+		currentPiece = currentPiece->NextSiblingElement();
+	}
+	return currentPiece;
+}
+
+unsigned int DZxmlParser::getPieceID()
+{
+	if (currentPiece == 0)
+	{
+		DZ_LOG(DZ_LOG_WARN, "No current piece");
+		return 0;
+	}
+
+	return currentPiece->UnsignedAttribute("id");
+}
+
+const char* DZxmlParser::getPieceFilename()
+{
+	if (currentPiece == 0)
+	{
+		DZ_LOG(DZ_LOG_WARN, "No current piece");
+		return 0;
+	}
+
+	return currentPiece->Attribute("filename");
+}
+
+XMLElement* DZxmlParser::getFirstEffect()
+{
+	currentEffect = 0;
+	if (effects != 0)
+	{
+		currentEffect = effects->FirstChildElement("EFFECT");
+	}
+	return currentEffect;
+}
+
+XMLElement* DZxmlParser::getNextEffect()
+{
+	if (currentEffect != 0)
+	{
+		currentEffect = currentEffect->NextSiblingElement();
+	}
+	return currentEffect;
+}
+
+unsigned int DZxmlParser::getEffectID()
+{
+	if (currentEffect == 0)
+	{
+		DZ_LOG(DZ_LOG_WARN, "No current effect");
+		return 0;
+	}
+
+	return currentEffect->UnsignedAttribute("id");
+}
+
+const char* DZxmlParser::getEffectFilename()
+{
+	if (currentEffect == 0)
+	{
+		DZ_LOG(DZ_LOG_WARN, "No current effect");
+		return 0;
+	}
+
+	return currentEffect->Attribute("filename");
+}
+
+unsigned int DZxmlParser::getEffectVolume()
+{
+	if (currentEffect == 0)
+	{
+		DZ_LOG(DZ_LOG_WARN, "No current effect");
+		return 0;
+	}
+
+	return currentEffect->UnsignedAttribute("volume");
+}
 
 XMLElement* DZxmlParser::getMap()
 {
