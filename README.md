@@ -1,5 +1,9 @@
 # DZgameEngine
-Object Oriented Game Engine based on SDL and OpenGL
+Object Oriented Game Engine based on SDL and OpenGL, written for
+teaching and learning aid.
+
+The engine was written as an aid for learning the C++ object oriented
+language while having fun.
 
 The engine is completely object oriented, it is written in C++, and it is
 platform independent. It uses the SDL library v.2.x and in the future it
@@ -15,16 +19,18 @@ achieved with different technologies, which can be plugged in the object
 classes by the mean of wrappers to the actual graphical interface.
 
 The engine also supports a state machine, which states can represent
-specific scenarios of the game or game levels. Support will also be
+specific scenarios of the game or game levels. Support is also 
 provided to play music and sounds, and to access external I/O resources,
 like keyboard, mouse, joystick, touch screen, and so forth.
 
 In order to achieve the best performance, the game engine tries to avoid
 as much a possible the use of C++ libraries. Instead, the engine provides
 its own classes for data manipulation and other necessities, that are
-designed for speed and not for generalized usage.
+designed for speed and not for generalized usage. At the same time the
+data manipulation classes provide a mean for understanding the theory
+behind the concepts of data manipulation and storage/retrieval.
 
-For further information, please visit http://www.dazzlingsolutions.com.
+Further information is also available on http://www.dazzlingsolutions.com.
 
 =========================================================================
 # Coding style requirements to write code for DZgameEngine
